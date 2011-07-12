@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="style.css" type="text/css" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript">
+   	  window.State = 0
+function reset_all(){
+	l_start = Math.floor(Math.random()*document.width) - 5
+	t_start = Math.floor(Math.random()*document.height) - 5
+	$('#circle2').css('left',l_start+'px')
+	$('#circle2').css('top',t_start+'px')
+	$('#notice').css('color','blue')
+	$('#notice').html('Go On..');
+	$('#circle2').attr('onclick', 'move_me();');
+
+	}
+
+jQuery(document).ready(function(){
+	
+   $(document).mousemove(function(e){
+	  var left_val = (e.pageX/document.width)*33;
+ 	  var top_val = ((e.pageY/document.height)*20)-10;
+
+	  $('.eye_ball').css('margin-left',left_val+'px')
+	  $('.eye_ball').css('margin-top',top_val+'px')
+   }); 
+   $(document).keydown(function(e){
+    if (e.keyCode == 38) { 
+       	  	$('#circle').css('background','#ff0000')
+    }
+	});
+})
+   function move_me(){
+	  if(window.State == 0){
+	  $(document).mousemove(function(e){
+	  	var l_pos = e.pageX-5;
+	  	var t_pos = e.pageY-5;
+	  	$('#circle2').css('left',l_pos+'px')
+	  	$('#circle2').css('top',t_pos+'px')
+  	  });
+	  	window.State = 1;
+	  }
+	  else{
+	  		$(document).unbind('mousemove');
+	  		window.State = 0;
+			target_offset = $('#forehead').offset();
+			dot_offset = $('#circle2').offset();
+			$('#circle2').removeAttr('onclick');
+	
+			rel_offset_x = dot_offset.left - target_offset.left;
+			rel_offset_y = dot_offset.top - target_offset.top;
+			if(rel_offset_x >= 0 && rel_offset_x <= 12 && rel_offset_y >= 0 && rel_offset_y <= 12 )
+			{
+				$('#notice').css('color','green')
+				$('#notice').html('Congrats, You Won!!!');
+			}
+			else
+			{
+				$('#notice').css('color','red')
+				$('#notice').html('Sorry, You Lost');
+			}
+	  }
+   } 
+</script>
+<title>Sundarikkoru Pottu</title>
+</head>
+
+<body onload="reset_all()">
+
+<div id="circle2" onclick="move_me();"></div>
+
+	<div id="circle">
+            <div id="forehead"></div>
+
+    	<div class="eye left">
+        	<div class="eye_ball">
+            	<div class="pupil"></div>
+            </div>
+        </div>
+        <div class="eye right">
+           	<div class="eye_ball">
+            	<div class="pupil"></div>
+            </div>
+		</div>
+    </div>
+    
+    <div id="notice">Go On..</div>
+    
+    <input type="button" value="Replay" onclick="reset_all()" /> 
+    
+</body>
+</html>
